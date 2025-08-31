@@ -1,0 +1,69 @@
+	<head>
+		<meta http-equiv="content-type" content="application/vnd.ms-Excel; charset=UTF-8">
+		<style>
+			table.marcado {
+			  border: 1px solid black;
+			}
+			td.marcado {
+			  border: 1px solid black;
+			}
+			th.marcado {
+			  border: 1px solid black;
+			}					
+		</style>
+	</head>
+	<BODY>	
+		<table style="tabla" border="0" cellspacing="1" cellpadding="3">
+			<tr>
+				<th colspan="7" align="Center"><p class="p_oscuro">Banco de Costa Rica</p></th>
+			</tr>
+			<tr>
+				<th colspan="7" align="Center"><p class="p_oscuro">Movimientos de la cuenta</p></th>
+			</tr>
+			<tr>
+				<th colspan="7" align="Center"><p class="p_oscuro">TEST USER</p></th>
+			</tr>					
+			<tr>
+				<th colspan="7" align="Center"><p class="p_oscuro">Cuenta Ahorros Dólares : CR12345678901234567890</p></th>
+			</tr>
+			<tr>
+				<th colspan="7" align="Center"><p class="p_oscuro">Período: Del 01/03/2025 al 31/08/2025</p></th>
+			</tr>
+			<tr>
+				<th class="marcado" align="center" width="1">Fecha contable</th>
+				<th class="marcado" align="center" width="1">Fecha transacción</th>
+				<th class="marcado" align="center" width="1">Hora</th>
+				<th class="marcado" align="center" width="1">Documento</th>
+				<th class="marcado" align="center" width="1">Descripción</th>
+				<th class="marcado" align="center" width="1">Débitos</th>
+				<th class="marcado" align="center" width="1">Créditos</th>
+			</tr>
+			<tr>
+				<td class="marcado" align="center" width="1">&nbsp;20/03/2025</td>
+				<td class="marcado" align="center" width="1">&nbsp;20/03/2025</td>
+				<td class="marcado" align="center" width="1">06:40</td>
+				<td class="marcado" align="center" width="1">1234567</td>
+				<td class="marcado" align="left" width="1">SERV ADMIN VISA AH</td>
+				<td class="marcado" align="right" width="1">1.00</td>
+				<td class="marcado" align="right" width="1">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="marcado" align="center" width="1">&nbsp;23/03/2025</td>
+				<td class="marcado" align="center" width="1">&nbsp;24/03/2025</td>
+				<td class="marcado" align="center" width="1">14:22</td>
+				<td class="marcado" align="center" width="1">7654321</td>
+				<td class="marcado" align="left" width="1">DB AH QUICK PASS/BILL ELECT</td>
+				<td class="marcado" align="right" width="1">16.14</td>
+				<td class="marcado" align="right" width="1">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="marcado" align="center" width="1">&nbsp;25/03/2025</td>
+				<td class="marcado" align="center" width="1">&nbsp;25/03/2025</td>
+				<td class="marcado" align="center" width="1">09:15</td>
+				<td class="marcado" align="center" width="1">9876543</td>
+				<td class="marcado" align="left" width="1">DEPOSIT</td>
+				<td class="marcado" align="right" width="1">&nbsp;</td>
+				<td class="marcado" align="right" width="1">500.00</td>
+			</tr>
+		</table>
+	</BODY>

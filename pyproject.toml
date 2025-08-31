@@ -9,6 +9,7 @@ license = "MIT"
 dependencies = [
     "pytz>= 2023.1, <2025",
     "iso8601>=2.1.0,<3",
+    "ofxtools>=0.9.5,<1.0.0",
 ]
 
 [dependency-groups]
