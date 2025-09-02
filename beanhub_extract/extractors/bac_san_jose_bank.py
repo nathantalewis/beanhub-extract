@@ -16,8 +16,8 @@ def parse_date(date_str: str) -> datetime.date:
     return datetime.date(int(parts[2]), int(parts[1]), int(parts[0]))
 
 
-class BacSanJoseExtractor(ExtractorBase):
-    EXTRACTOR_NAME = "bac_san_jose"
+class BacSanJoseBankExtractor(ExtractorBase):
+    EXTRACTOR_NAME = "bac_san_jose_bank"
     DEFAULT_IMPORT_ID = "bac_san_jose:{{ source_account }}:{{ reference }}"
     
     # Expected header for account info section (we only use first 4 fields)

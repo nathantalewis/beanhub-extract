@@ -2,7 +2,8 @@ import os
 import typing
 
 from .ally_bank_ofx import AllyBankOFXExtractor
-from .bac_san_jose import BacSanJoseExtractor
+from .bac_san_jose_bank import BacSanJoseBankExtractor
+from .bac_san_jose_credit import BacSanJoseCreditExtractor
 from .banco_bcr import BancoBcrExtractor
 from .base import ExtractorBase
 from .capital_one_ofx import CapitalOneOFXExtractor
@@ -15,7 +16,8 @@ from .wsecu import WSECUExtractor
 
 ALL_EXTRACTORS: dict[str, typing.Type[ExtractorBase]] = {
     AllyBankOFXExtractor.EXTRACTOR_NAME: AllyBankOFXExtractor,
-    BacSanJoseExtractor.EXTRACTOR_NAME: BacSanJoseExtractor,
+    BacSanJoseBankExtractor.EXTRACTOR_NAME: BacSanJoseBankExtractor,
+    BacSanJoseCreditExtractor.EXTRACTOR_NAME: BacSanJoseCreditExtractor,
     BancoBcrExtractor.EXTRACTOR_NAME: BancoBcrExtractor,
     MercuryExtractor.EXTRACTOR_NAME: MercuryExtractor,
     ChaseCreditCardExtractor.EXTRACTOR_NAME: ChaseCreditCardExtractor,

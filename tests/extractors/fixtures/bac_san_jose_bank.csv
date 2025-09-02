@@ -1,0 +1,10 @@
+Numero de Clientes, Nombre, Producto, Moneda, Saldo Inicial, Saldo en Libros, Retenidos y Diferidos, Saldo Disponible, Fecha, STBGAV, STBUNC, Mensaje1, Mensaje2, Mensaje3, Mensaje4, Mensaje5, Mensaje6 
+1234567, ANONYMOUS USER, CR12345678901234567890, CRC, 100000.00, 50000.00, 0.00, 50000.00, 31/03/2025, 50000.00, 0.00, , , , Generic message, Generic message 2, Generic message 3 
+
+Detalle de Estado Bancario
+Fecha de Transacción, Referencia de Transacción, Código de Transacción, Descripción de Transacción, Débito de Transacción, Crédito de Transacción, Balance de Transacción 
+01/03/2025, 12345, TF, TRANSFERENCIA RECIBIDA, 0.00, 25000.00, 75000.00 
+05/03/2025, 23456, PT, DEPOSITO EFECTIVO, 0.00, 15000.00, 90000.00 
+10/03/2025, 34567, PE, PAGO SERVICIOS, 5000.00, 0.00, 85000.00 
+15/03/2025, 45678, MD, RETIRO ATM, 3000.00, 0.00, 82000.00 
+20/03/2025, 56789, PT, INTERES GANADO, 0.00, 500.00, 82500.00 
