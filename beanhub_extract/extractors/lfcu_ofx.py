@@ -19,28 +19,28 @@ def parse_ofx_datetime(dt_str: str) -> datetime.date:
     return datetime.datetime.strptime(date_part, "%Y%m%d").date()
 
 
-class AllyBankOFXExtractor(ExtractorBase):
-    EXTRACTOR_NAME = "ally_bank_ofx"
-    DEFAULT_IMPORT_ID = "ally_bank:{{ source_account }}:{{ transaction_id }}"
+class LfcuOFXExtractor(ExtractorBase):
+    EXTRACTOR_NAME = "lfcu_ofx"
+    DEFAULT_IMPORT_ID = "lfcu:{{ source_account }}:{{ transaction_id }}"
 
     def detect(self) -> bool:
-        """Detect if this is an Ally Bank OFX file."""
+        """Detect if this is an LFCU OFX file."""
         try:
             self.input_file.seek(0)
             content = self.input_file.read(1000)  # Read first 1000 chars
             self.input_file.seek(0)
             
-            # Check for OFX header and Ally Bank specific markers
+            # Check for OFX header and LFCU specific markers
             return (
                 "OFXHEADER:" in content and
                 "<OFX>" in content and
-                ("<ORG>Ally</ORG>" in content or "<FID>6157</FID>" in content)
+                ("<ORG>Lafayette Federal Credit Union</ORG>" in content or "<FID>16710</FID>" in content)
             )
         except Exception:
             return False
 
     def fingerprint(self) -> Fingerprint | None:
-        """Generate fingerprint based on first and last transaction."""
+        """Generate fingerprint based on first transaction."""
         try:
             transactions = list(self._parse_transactions())
             if not transactions:
@@ -201,7 +201,7 @@ class AllyBankOFXExtractor(ExtractorBase):
                 return
 
     def __call__(self) -> typing.Generator[Transaction, None, None]:
-        """Extract transactions from Ally Bank OFX file."""
+        """Extract transactions from LFCU OFX file."""
         filename = None
         if hasattr(self.input_file, "name"):
             filename = self.input_file.name
@@ -210,9 +210,9 @@ class AllyBankOFXExtractor(ExtractorBase):
         
         for i, txn_data in enumerate(transactions):
             try:
-                # Parse transaction data - Ally Bank only uses DTPOSTED
+                # Parse transaction data - LFCU only uses DTPOSTED
                 transaction_date = parse_ofx_datetime(txn_data.get('DTPOSTED', ''))
-                user_date = transaction_date  # Ally Bank doesn't have DTUSER, use DTPOSTED for both
+                user_date = transaction_date  # LFCU doesn't have DTUSER, use DTPOSTED for both
                 
                 amount = decimal.Decimal(txn_data.get('TRNAMT', '0'))
                 

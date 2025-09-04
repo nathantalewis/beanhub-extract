@@ -1,0 +1,87 @@
+OFXHEADER:100
+DATA:OFXSGML
+VERSION:102
+SECURITY:NONE
+ENCODING:USASCII
+CHARSET:1252
+COMPRESSION:NONE
+OLDFILEUID:NONE
+NEWFILEUID:NONE
+
+<OFX>
+    <SIGNONMSGSRSV1>
+        <SONRS>
+            <STATUS>
+                <CODE>0</CODE>
+                <SEVERITY>INFO</SEVERITY>
+                <MESSAGE>OK</MESSAGE>
+            </STATUS>
+            <DTSERVER>20240904205901</DTSERVER>
+            <LANGUAGE>ENG</LANGUAGE>
+            <FI>
+               <ORG>Lafayette Federal Credit Union</ORG>
+               <FID>16710</FID>
+            </FI>
+            <INTU.BID>16710</INTU.BID>
+            <INTU.USERID>12345</INTU.USERID>
+        </SONRS>
+    </SIGNONMSGSRSV1>
+    <BANKMSGSRSV1>
+        <STMTTRNRS>
+            <TRNUID>0</TRNUID>
+            <STATUS>
+                <CODE>0</CODE>
+                <SEVERITY>INFO</SEVERITY>
+                <MESSAGE>OK</MESSAGE>
+            </STATUS>
+            <STMTRS>
+                <CURDEF>USD</CURDEF>
+                <BANKACCTFROM>
+                    <BANKID>254074811</BANKID>
+                    <ACCTID>1234567890-S0101</ACCTID>
+                    <ACCTTYPE>SAVINGS</ACCTTYPE>
+                </BANKACCTFROM>
+                <BANKTRANLIST>
+                    <DTSTART>20240301</DTSTART>
+                    <DTEND>20240904</DTEND>
+                    <STMTTRN>
+                        <TRNTYPE>CREDIT</TRNTYPE>
+                        <DTPOSTED>20240831</DTPOSTED>
+                        <TRNAMT>125.50</TRNAMT>
+                        <FITID>100001</FITID>
+                        <NAME>Dividend Deposit</NAME>
+                        <MEMO>Dividend Deposit</MEMO>
+                    </STMTTRN>
+                    <STMTTRN>
+                        <TRNTYPE>CREDIT</TRNTYPE>
+                        <DTPOSTED>20240731</DTPOSTED>
+                        <TRNAMT>123.75</TRNAMT>
+                        <FITID>100002</FITID>
+                        <NAME>Dividend Deposit</NAME>
+                        <MEMO>Dividend Deposit</MEMO>
+                    </STMTTRN>
+                    <STMTTRN>
+                        <TRNTYPE>DEBIT</TRNTYPE>
+                        <DTPOSTED>20240715</DTPOSTED>
+                        <TRNAMT>-50.00</TRNAMT>
+                        <FITID>100003</FITID>
+                        <NAME>ATM Withdrawal</NAME>
+                        <MEMO>ATM Transaction Fee</MEMO>
+                    </STMTTRN>
+                    <STMTTRN>
+                        <TRNTYPE>CREDIT</TRNTYPE>
+                        <DTPOSTED>20240630</DTPOSTED>
+                        <TRNAMT>120.25</TRNAMT>
+                        <FITID>100004</FITID>
+                        <NAME>Dividend Deposit</NAME>
+                        <MEMO>Dividend Deposit</MEMO>
+                    </STMTTRN>
+                </BANKTRANLIST>
+                <LEDGERBAL>
+                    <BALAMT>5432.10</BALAMT>
+                    <DTASOF>20240904205901</DTASOF>
+                </LEDGERBAL>
+            </STMTRS>
+        </STMTTRNRS>
+    </BANKMSGSRSV1>
+</OFX>
