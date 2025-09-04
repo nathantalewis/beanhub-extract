@@ -1,0 +1,10 @@
+"Account Name : 60 MONTH CERTIFICATE"
+"Account Number : XXXXXXX123"
+"Date Range : 03/01/2025-09/03/2025"
+Transaction Number,Date,Description,Memo,Amount Debit,Amount Credit,Balance,Check Number,Fees ,Principal ,Interest
+"TXN20250831000000[-5:EST]*0.00*42**COMMENT",08/31/2025,"COMMENT ","Cert. Rate   4.690%",-0.00,,"",,0.00,,
+"TXN20250831000000[-5:EST]*123.45*521**Deposit Dividend 4.690%",08/31/2025,"Deposit Dividend 4.690% ","APY Earned XXXXXX08/01/25 to 08/31/25",,123.45,"10000.00",,0.00,123.45,0.00
+"TXN20250731000000[-5:EST]*0.00*42**COMMENT",07/31/2025,"COMMENT ","Cert. Rate   4.690%",-0.00,,"",,0.00,,
+"TXN20250731000000[-5:EST]*98.76*521**Deposit Dividend 4.690%",07/31/2025,"Deposit Dividend 4.690% ","APY Earned XXXXXX07/01/25 to 07/31/25",,98.76,"9876.55",,0.00,98.76,0.00
+"TXN20250630000000[-5:EST]*0.00*42**COMMENT",06/30/2025,"COMMENT ","Cert. Rate   4.690%",-0.00,,"",,0.00,,
+"TXN20250630000000[-5:EST]*87.65*521**Deposit Dividend 4.690%",06/30/2025,"Deposit Dividend 4.690% ","APY Earned XXXXXX06/01/25 to 06/30/25",,87.65,"9777.79",,0.00,87.65,0.00

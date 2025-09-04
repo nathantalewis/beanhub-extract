@@ -11,6 +11,7 @@ from .capital_one_ofx import CapitalOneOFXExtractor
 from .chase import ChaseCreditCardExtractor
 from .credit_human import CreditHumanExtractor
 from .csv import CSVExtractor
+from .docfcu import DocfcuExtractor
 from .mercury import MercuryExtractor
 from .plaid import PlaidExtractor
 from .wealthsimple import WealthsimpleExtractor
@@ -26,6 +27,7 @@ ALL_EXTRACTORS: dict[str, typing.Type[ExtractorBase]] = {
     ChaseCreditCardExtractor.EXTRACTOR_NAME: ChaseCreditCardExtractor,
     CapitalOneOFXExtractor.EXTRACTOR_NAME: CapitalOneOFXExtractor,
     CreditHumanExtractor.EXTRACTOR_NAME: CreditHumanExtractor,
+    DocfcuExtractor.EXTRACTOR_NAME: DocfcuExtractor,
     PlaidExtractor.EXTRACTOR_NAME: PlaidExtractor,
     WealthsimpleExtractor.EXTRACTOR_NAME: WealthsimpleExtractor,
     WSECUExtractor.EXTRACTOR_NAME: WSECUExtractor,
