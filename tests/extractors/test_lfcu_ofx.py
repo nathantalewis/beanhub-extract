@@ -43,7 +43,6 @@ def test_parse_ofx_datetime(dt_str: str, expected: datetime.date):
                     note=None,
                     currency="USD",
                     source_account="1234567890-S0101",
-                    last_four_digits="1234567890-S0101",
                     extra={},
                 ),
                 Transaction(
@@ -59,7 +58,6 @@ def test_parse_ofx_datetime(dt_str: str, expected: datetime.date):
                     note=None,
                     currency="USD",
                     source_account="1234567890-S0101",
-                    last_four_digits="1234567890-S0101",
                     extra={},
                 ),
                 Transaction(
@@ -75,7 +73,6 @@ def test_parse_ofx_datetime(dt_str: str, expected: datetime.date):
                     note="ATM Transaction Fee",
                     currency="USD",
                     source_account="1234567890-S0101",
-                    last_four_digits="1234567890-S0101",
                     extra={},
                 ),
                 Transaction(
@@ -91,7 +88,6 @@ def test_parse_ofx_datetime(dt_str: str, expected: datetime.date):
                     note=None,
                     currency="USD",
                     source_account="1234567890-S0101",
-                    last_four_digits="1234567890-S0101",
                     extra={},
                 ),
                 Transaction(
@@ -107,7 +103,6 @@ def test_parse_ofx_datetime(dt_str: str, expected: datetime.date):
                     note=None,
                     currency="USD",
                     source_account="1234567890-S0101",
-                    last_four_digits="1234567890-S0101",
                     extra={},
                 ),
             ],

@@ -1,9 +1,8 @@
 import datetime
 import decimal
 import hashlib
-import os
 import typing
-from xml.etree import ElementTree
+from io import BytesIO
 
 from ofxtools.Parser import OFXTree
 
@@ -62,143 +61,69 @@ class AllyBankOFXExtractor(ExtractorBase):
         except Exception:
             return None
 
-    def _extract_statement_metadata(self, stmtrs) -> tuple[str | None, str | None, str | None, str | None, str | None]:
-        """Extract currency, main account, ledger balance, ledger date, and account ID from statement."""
-        currency = None
-        curdef = stmtrs.find('.//CURDEF')
-        if curdef is not None:
-            currency = curdef.text
-        
-        main_account = None
-        account_id = None
-        bankacctfrom = stmtrs.find('.//BANKACCTFROM/ACCTID')
-        if bankacctfrom is not None:
-            main_account = bankacctfrom.text
-            account_id = bankacctfrom.text
-        
-        ledger_balance = None
-        ledger_date = None
-        ledgerbal = stmtrs.find('.//LEDGERBAL')
-        if ledgerbal is not None:
-            balamt = ledgerbal.find('BALAMT')
-            dtasof = ledgerbal.find('DTASOF')
-            if balamt is not None:
-                ledger_balance = balamt.text
-            if dtasof is not None:
-                ledger_date = dtasof.text
-        
-        return currency, main_account, ledger_balance, ledger_date, account_id
-
-    def _create_balance_transaction(self, ledger_balance: str, ledger_date: str, 
-                                  currency: str | None, main_account: str | None, 
-                                  account_id: str | None = None) -> dict:
-        """Create a balance transaction dictionary."""
-        balance_txn = {
-            'TRNTYPE': 'BALANCE',
-            'DTPOSTED': ledger_date,
-            'TRNAMT': ledger_balance,
-            'FITID': f'BALANCE_{ledger_date}',
-            'NAME': f'Balance as of {parse_ofx_datetime(ledger_date).strftime("%Y-%m-%d")}',
-            '_CURRENCY': currency,
-            '_MAIN_ACCOUNT': main_account
-        }
-        
-        # Add account_id if available
-        if account_id is not None:
-            balance_txn['_ACCOUNT_ID'] = account_id
-            
-        return balance_txn
-
-    def _add_metadata_to_transaction(self, txn_data: dict, currency: str | None, 
-                                   main_account: str | None, ledger_balance: str | None, 
-                                   ledger_date: str | None, account_id: str | None = None) -> None:
-        """Add extracted metadata to transaction data."""
-        if currency:
-            txn_data['_CURRENCY'] = currency
-        if main_account:
-            txn_data['_MAIN_ACCOUNT'] = main_account
-        if ledger_balance:
-            txn_data['_LEDGER_BALANCE'] = ledger_balance
-        if ledger_date:
-            txn_data['_LEDGER_DATE'] = ledger_date
-        if account_id:
-            txn_data['_ACCOUNT_ID'] = account_id
-
-    def _parse_transaction_from_element(self, stmt_trn) -> dict:
-        """Parse transaction data from a STMTTRN element."""
-        txn_data = {}
-        for child in stmt_trn:
-            txn_data[child.tag] = child.text
-        return txn_data
-
     def _parse_transactions(self) -> typing.Generator[dict, None, None]:
         """Parse OFX file and yield transaction dictionaries."""
         self.input_file.seek(0)
-        
-        try:
-            parser = OFXTree()
-            parser.parse(self.input_file)
-            ofx = parser.convert()
-            
-            # Navigate to bank statement transactions
-            # Structure: OFX -> BANKMSGSRSV1 -> STMTTRNRS -> STMTRS -> BANKTRANLIST -> STMTTRN
-            bank_msgs = ofx.find('.//BANKMSGSRSV1')
-            if bank_msgs is None:
-                return
-                
-            stmt_trnrs = bank_msgs.find('.//STMTTRNRS')
-            if stmt_trnrs is None:
-                return
-                
-            stmtrs = stmt_trnrs.find('.//STMTRS')
-            if stmtrs is None:
-                return
-            
-            # Extract statement metadata
-            currency, main_account, ledger_balance, ledger_date, account_id = self._extract_statement_metadata(stmtrs)
-                
-            bank_tran_list = stmtrs.find('.//BANKTRANLIST')
-            if bank_tran_list is None:
-                return
-            
-            # Extract all STMTTRN elements
-            for stmt_trn in bank_tran_list.findall('.//STMTTRN'):
-                txn_data = self._parse_transaction_from_element(stmt_trn)
-                self._add_metadata_to_transaction(txn_data, currency, main_account, ledger_balance, ledger_date, account_id)
-                yield txn_data
-            
-            # Yield balance transaction if available
+        content = self.input_file.read()
+        self.input_file.seek(0)
+
+        # Fix case sensitivity issues in OFX SEVERITY tags for ofxtools compatibility
+        content = content.replace('<SEVERITY>Info</SEVERITY>', '<SEVERITY>INFO</SEVERITY>')
+        content = content.replace('<SEVERITY>Warn</SEVERITY>', '<SEVERITY>WARN</SEVERITY>')
+        content = content.replace('<SEVERITY>Error</SEVERITY>', '<SEVERITY>ERROR</SEVERITY>')
+
+        from io import BytesIO
+        binary_file = BytesIO(content.encode('utf-8'))
+
+        parser = OFXTree()
+        parser.parse(binary_file)
+        ofx = parser.convert()
+
+        if not hasattr(ofx, 'statements') or not ofx.statements:
+            return
+
+        for stmt in ofx.statements:
+            currency = stmt.curdef if hasattr(stmt, 'curdef') else 'USD'
+
+            if not hasattr(stmt, 'bankacctfrom'):
+                raise ValueError("OFX statement missing bankacctfrom - cannot extract account information")
+
+            account_id = stmt.bankacctfrom.acctid
+            if not account_id:
+                raise ValueError("OFX statement bankacctfrom missing acctid - cannot identify account")
+
+            ledger_balance = None
+            ledger_date = None
+            if hasattr(stmt, 'ledgerbal') and hasattr(stmt.ledgerbal, 'balamt'):
+                ledger_balance = str(stmt.ledgerbal.balamt)
+                ledger_date = stmt.ledgerbal.dtasof.strftime('%Y%m%d%H%M%S')
+
+            if hasattr(stmt, 'banktranlist') and stmt.banktranlist:
+                transactions = list(stmt.banktranlist)
+                for txn in transactions:
+                    txn_data = {
+                        'TRNTYPE': txn.trntype,
+                        'DTPOSTED': txn.dtposted.strftime('%Y%m%d%H%M%S'),
+                        'TRNAMT': str(txn.trnamt),
+                        'FITID': txn.fitid,
+                        'NAME': txn.name,
+                    }
+                    if hasattr(txn, 'memo') and txn.memo:
+                        txn_data['MEMO'] = txn.memo
+                    txn_data['CURRENCY'] = currency
+                    txn_data['ACCOUNT_ID'] = account_id
+                    yield txn_data
+
             if ledger_balance and ledger_date:
-                yield self._create_balance_transaction(ledger_balance, ledger_date, currency, main_account, account_id)
-                
-        except Exception as e:
-            # If ofxtools parsing fails, try basic XML parsing
-            self.input_file.seek(0)
-            try:
-                content = self.input_file.read()
-                # Remove OFX header lines that aren't valid XML
-                xml_start = content.find('<OFX>')
-                if xml_start > 0:
-                    content = content[xml_start:]
-                
-                root = ElementTree.fromstring(content)
-                
-                # Extract statement metadata
-                currency, main_account, ledger_balance, ledger_date, account_id = self._extract_statement_metadata(root)
-                
-                # Find all STMTTRN elements
-                for stmt_trn in root.findall('.//STMTTRN'):
-                    txn_data = self._parse_transaction_from_element(stmt_trn)
-                    self._add_metadata_to_transaction(txn_data, currency, main_account, ledger_balance, ledger_date, account_id)
-                    
-                    if txn_data:  # Only yield if we have data
-                        yield txn_data
-                
-                # Yield balance transaction if available
-                if ledger_balance and ledger_date:
-                    yield self._create_balance_transaction(ledger_balance, ledger_date, currency, main_account, account_id)
-            except Exception:
-                return
+                yield {
+                    'TRNTYPE': 'BALANCE',
+                    'DTPOSTED': ledger_date,
+                    'TRNAMT': ledger_balance,
+                    'FITID': f"BALANCE_{ledger_date}",
+                    'NAME': f"Balance as of {parse_ofx_datetime(ledger_date)}",
+                    'CURRENCY': currency,
+                    'ACCOUNT_ID': account_id,
+                }
 
     def __call__(self) -> typing.Generator[Transaction, None, None]:
         """Extract transactions from Ally Bank OFX file."""
@@ -206,53 +131,42 @@ class AllyBankOFXExtractor(ExtractorBase):
         if hasattr(self.input_file, "name"):
             filename = self.input_file.name
 
-        transactions = list(self._parse_transactions())
-        
-        for i, txn_data in enumerate(transactions):
-            try:
-                # Parse transaction data - Ally Bank only uses DTPOSTED
-                transaction_date = parse_ofx_datetime(txn_data.get('DTPOSTED', ''))
-                user_date = transaction_date  # Ally Bank doesn't have DTUSER, use DTPOSTED for both
-                
-                amount = decimal.Decimal(txn_data.get('TRNAMT', '0'))
-                
-                # Extract description and memo
-                name = txn_data.get('NAME', '').strip()
-                memo = txn_data.get('MEMO', '').strip()
-                
-                # Use name as primary description, memo as note if different
-                desc = name
-                note = memo if memo and memo != name else None
-                
-                # Determine transaction type
-                txn_type = txn_data.get('TRNTYPE', '')
-                
-                # Extract account information
-                source_account = txn_data.get('_MAIN_ACCOUNT')
-                account_id = txn_data.get('_ACCOUNT_ID')
-                
-                # Use extracted currency or default to USD
-                currency = txn_data.get('_CURRENCY', 'USD')
-                
-                yield Transaction(
-                    extractor=self.EXTRACTOR_NAME,
-                    file=filename,
-                    lineno=i + 1,
-                    transaction_id=txn_data.get('FITID'),
-                    date=user_date,
-                    post_date=transaction_date,  # OFX DTPOSTED is the post date
-                    desc=desc,
-                    amount=amount,
-                    type=txn_type,
-                    note=note,
-                    currency=currency,
-                    source_account=source_account,
-                    last_four_digits=account_id,
-                    extra={k: v for k, v in txn_data.items() 
-                          if k not in ['DTPOSTED', 'TRNAMT', 'NAME', 'MEMO', 'FITID', 'TRNTYPE', 
-                                     '_CURRENCY', '_MAIN_ACCOUNT', '_LEDGER_BALANCE', 
-                                     '_LEDGER_DATE', '_ACCOUNT_ID']}
-                )
-            except (ValueError, KeyError) as e:
-                # Skip malformed transactions but continue processing
-                continue
+        for lineno, txn_data in enumerate(self._parse_transactions(), 1):
+            # Validate required fields
+            if 'DTPOSTED' not in txn_data:
+                raise ValueError(f"Transaction {lineno} missing DTPOSTED")
+            if 'TRNAMT' not in txn_data:
+                raise ValueError(f"Transaction {lineno} missing TRNAMT")
+            if 'TRNTYPE' not in txn_data:
+                raise ValueError(f"Transaction {lineno} missing TRNTYPE")
+            if 'ACCOUNT_ID' not in txn_data:
+                raise ValueError(f"Transaction {lineno} missing ACCOUNT_ID")
+
+            # Parse transaction data
+            transaction_date = parse_ofx_datetime(txn_data['DTPOSTED'])
+            amount = decimal.Decimal(txn_data['TRNAMT'])
+            
+            # Extract description and memo
+            name = txn_data.get('NAME', '').strip()
+            memo = txn_data.get('MEMO', '').strip()
+            
+            # Use name as primary description, memo as note if different
+            desc = name
+            note = memo if memo and memo != name else None
+            
+            yield Transaction(
+                extractor=self.EXTRACTOR_NAME,
+                file=filename,
+                lineno=lineno,
+                transaction_id=txn_data.get('FITID'),
+                date=transaction_date,
+                post_date=transaction_date,
+                desc=desc,
+                amount=amount,
+                type=txn_data['TRNTYPE'],
+                note=note,
+                currency=txn_data.get('CURRENCY', 'USD'),
+                source_account=txn_data['ACCOUNT_ID'],
+                last_four_digits=txn_data['ACCOUNT_ID'],
+                extra={},
+            )

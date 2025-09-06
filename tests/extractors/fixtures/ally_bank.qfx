@@ -28,7 +28,7 @@ NEWFILEUID:NONE
       <TRNUID>0</TRNUID>
       <STATUS>
         <CODE>0</CODE>
-        <SEVERITY>Info</SEVERITY>
+        <SEVERITY>INFO</SEVERITY>
       </STATUS>
       <STMTRS>
         <CURDEF>USD</CURDEF>

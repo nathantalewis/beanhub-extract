@@ -32,21 +32,23 @@ def test_parse_ofx_datetime(dt_str: str, expected: datetime.date):
             [
                 Transaction(
                     extractor="capital_one_ofx",
-                    file=None,
+                    file="capital_one.ofx",
                     lineno=1,
                     transaction_id="202403151152001",
-                    date=datetime.date(2024, 3, 15),
+                    date=datetime.date(2024, 3, 14),
                     post_date=datetime.date(2024, 3, 15),
                     desc="COFFEE SHOP DOWNTOWN",
                     amount=decimal.Decimal("-25.99"),
                     type="DEBIT",
-                    note="COFFEE SHOP DOWNTOWN",
+                    note=None,
                     currency="USD",
+                    source_account="1234",
+                    last_four_digits="1234",
                     extra={},
                 ),
                 Transaction(
                     extractor="capital_one_ofx",
-                    file=None,
+                    file="capital_one.ofx",
                     lineno=2,
                     transaction_id="202403141202002",
                     date=datetime.date(2024, 3, 14),
@@ -54,13 +56,15 @@ def test_parse_ofx_datetime(dt_str: str, expected: datetime.date):
                     desc="GROCERY STORE",
                     amount=decimal.Decimal("-12.50"),
                     type="DEBIT",
-                    note="GROCERY STORE",
+                    note=None,
                     currency="USD",
+                    source_account="1234",
+                    last_four_digits="5678",
                     extra={},
                 ),
                 Transaction(
                     extractor="capital_one_ofx",
-                    file=None,
+                    file="capital_one.ofx",
                     lineno=3,
                     transaction_id="202403122149004",
                     date=datetime.date(2024, 3, 12),
@@ -68,8 +72,26 @@ def test_parse_ofx_datetime(dt_str: str, expected: datetime.date):
                     desc="CAPITAL ONE AUTOPAY PYMT",
                     amount=decimal.Decimal("500.00"),
                     type="CREDIT",
-                    note="CAPITAL ONE AUTOPAY PYMT",
+                    note=None,
                     currency="USD",
+                    source_account="1234",
+                    last_four_digits="1234",
+                    extra={},
+                ),
+                Transaction(
+                    extractor="capital_one_ofx",
+                    file="capital_one.ofx",
+                    lineno=4,
+                    transaction_id="BALANCE_20240316174441",
+                    date=datetime.date(2024, 3, 16),
+                    post_date=datetime.date(2024, 3, 16),
+                    desc="Balance as of 2024-03-16",
+                    amount=decimal.Decimal("-234.56"),
+                    type="BALANCE",
+                    note=None,
+                    currency="USD",
+                    source_account="1234",
+                    last_four_digits="1234",
                     extra={},
                 ),
             ],
@@ -77,13 +99,13 @@ def test_parse_ofx_datetime(dt_str: str, expected: datetime.date):
     ],
 )
 def test_capital_one_ofx_extractor(
-    input_file: str, expected: list[Transaction], fixtures_dir: pathlib.Path
+    input_file: str, expected: list[Transaction], fixtures_folder: pathlib.Path
 ):
-    input_file_path = fixtures_dir / input_file
+    input_file_path = fixtures_folder / input_file
     with input_file_path.open("rt") as fo:
         extractor = CapitalOneOFXExtractor(fo)
         result = list(extractor())
-        result = [strip_txn_base_path(txn, fixtures_dir) for txn in result]
+        result = [strip_txn_base_path(fixtures_folder, txn) for txn in result]
         assert result == expected
 
 
@@ -100,9 +122,9 @@ def test_capital_one_ofx_extractor(
     ],
 )
 def test_capital_one_ofx_fingerprint(
-    input_file: str, expected: Fingerprint, fixtures_dir: pathlib.Path
+    input_file: str, expected: Fingerprint, fixtures_folder: pathlib.Path
 ):
-    input_file_path = fixtures_dir / input_file
+    input_file_path = fixtures_folder / input_file
     with input_file_path.open("rt") as fo:
         extractor = CapitalOneOFXExtractor(fo)
         result = extractor.fingerprint()
@@ -121,9 +143,9 @@ def test_capital_one_ofx_fingerprint(
     ],
 )
 def test_capital_one_ofx_detect(
-    input_file: str, expected: bool, fixtures_dir: pathlib.Path
+    input_file: str, expected: bool, fixtures_folder: pathlib.Path
 ):
-    input_file_path = fixtures_dir / input_file
+    input_file_path = fixtures_folder / input_file
     with input_file_path.open("rt") as fo:
         extractor = CapitalOneOFXExtractor(fo)
         result = extractor.detect()
