@@ -1,0 +1,165 @@
+OFXHEADER:100
+DATA:OFXSGML
+VERSION:102
+SECURITY:NONE
+ENCODING:USASCII
+CHARSET:1252
+COMPRESSION:NONE
+OLDFILEUID:D1088586-60EC-11D1-B730-00805F01C5E9
+NEWFILEUID:21F3EB24-6259-11D1-B730-00805F01C5E9
+
+<OFX>
+  <SIGNONMSGSRSV1>
+    <SONRS>
+      <STATUS>
+        <CODE>0
+        <SEVERITY>INFO
+      </STATUS>
+      <DTSERVER>20240315120000.000
+      <LANGUAGE>ENG
+
+      <FI>
+        <ORG>E*TRADE
+        <FID>9999
+      </FI>
+      <INTU.BID>9999
+      <INTU.USERID>1234
+    </SONRS>
+  </SIGNONMSGSRSV1>
+  <INVSTMTMSGSRSV1>
+    <INVSTMTTRNRS>
+      <TRNUID>0
+      <STATUS>
+        <CODE>0
+        <SEVERITY>INFO
+      </STATUS>
+      <INVSTMTRS>
+        <DTASOF>20240315120000.000
+        <CURDEF>USD
+        <INVACCTFROM>
+          <BROKERID>etrade.com
+          <ACCTID>123456789
+        </INVACCTFROM>
+        <INVTRANLIST>
+          <DTSTART>20240301000000.000
+          <DTEND>20240315000000.000
+          <INCOME>
+            <INVTRAN>
+              <FITID>240301_INT_0
+              <DTTRADE>20240301120000.000
+              <MEMO>INT - SAMPLE BANK N.A.(Period 03/01-03/31)
+            </INVTRAN>
+            <SECID>
+              <UNIQUEID>SAMPLEINT
+              <UNIQUEIDTYPE>CUSIP
+            </SECID>
+            <INCOMETYPE>INTEREST
+            <TOTAL>5.25
+            <SUBACCTSEC>CASH
+            <SUBACCTFUND>CASH
+          </INCOME>
+          <BUYSTOCK>
+            <INVBUY>
+              <INVTRAN>
+                <FITID>240310_B_0
+                <DTTRADE>20240310120000.000
+                <MEMO>SAMPLE TECH ETF DIVIDEND REINVESTMENT
+              </INVTRAN>
+              <SECID>
+                <UNIQUEID>123456789
+                <UNIQUEIDTYPE>CUSIP
+              </SECID>
+              <UNITS>10.5
+              <UNITPRICE>50.00
+              <TOTAL>-525.00
+              <SUBACCTSEC>CASH
+              <SUBACCTFUND>CASH
+            </INVBUY>
+            <BUYTYPE>BUY
+          </BUYSTOCK>
+          <INCOME>
+            <INVTRAN>
+              <FITID>240310_DIV_0
+              <DTTRADE>20240310120000.000
+              <MEMO>DIV - SAMPLE TECH ETF
+            </INVTRAN>
+            <SECID>
+              <UNIQUEID>123456789
+              <UNIQUEIDTYPE>CUSIP
+            </SECID>
+            <INCOMETYPE>DIV
+            <TOTAL>525.00
+            <SUBACCTSEC>CASH
+            <SUBACCTFUND>CASH
+          </INCOME>
+        </INVTRANLIST>
+        <INVPOSLIST>
+          <POSSTOCK>
+            <INVPOS>
+              <SECID>
+                <UNIQUEID>123456789
+                <UNIQUEIDTYPE>CUSIP
+              </SECID>
+              <HELDINACCT>CASH
+              <POSTYPE>LONG
+              <UNITS>100.5
+              <UNITPRICE>52.00
+              <MKTVAL>5226.00
+              <DTPRICEASOF>20240314120000
+              <MEMO>STECH
+            </INVPOS>
+          </POSSTOCK>
+        </INVPOSLIST>
+        <INVBAL>
+          <AVAILCASH>1250.75
+          <MARGINBALANCE>0
+          <SHORTBALANCE>0
+          <BUYPOWER>1250.75
+          <BALLIST>
+            <BAL>
+              <NAME>Total Account Value
+              <DESC>Total Account Value
+              <BALTYPE>DOLLAR
+              <VALUE>6476.75
+              <DTASOF>20240315120000.000
+            </BAL>
+          </BALLIST>
+        </INVBAL>
+      </INVSTMTRS>
+    </INVSTMTTRNRS>
+  </INVSTMTMSGSRSV1>
+  <SECLISTMSGSRSV1>
+    <SECLIST>
+      <STOCKINFO>
+        <SECINFO>
+          <SECID>
+            <UNIQUEID>123456789
+            <UNIQUEIDTYPE>CUSIP
+          </SECID>
+          <SECNAME>SAMPLE TECHNOLOGY ETF
+          <TICKER>STECH
+          <UNITPRICE>52.000000
+          <DTASOF>20240314210000.000
+        </SECINFO>
+      </STOCKINFO>
+      <MFINFO>
+        <SECINFO>
+          <SECID>
+            <UNIQUEID>SAMPLEINT
+            <UNIQUEIDTYPE>CUSIP
+          </SECID>
+          <SECNAME>Sample Interest Security
+          <TICKER>SINT
+          <UNITPRICE>1
+          <MEMO>Sample interest bearing security
+        </SECINFO>
+        <MFASSETCLASS>
+          <PORTION>
+            <ASSETCLASS>MONEYMRKT
+            <PERCENT>100
+          </PORTION>
+        </MFASSETCLASS>
+      </MFINFO>
+    </SECLIST>
+  </SECLISTMSGSRSV1>
+</OFX>
