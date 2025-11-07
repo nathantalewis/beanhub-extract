@@ -13,6 +13,7 @@ from .credit_human import CreditHumanExtractor
 from .credit_human_ofx import CreditHumanOFXExtractor
 from .csv import CSVExtractor
 from .docfcu import DocfcuExtractor
+from .docfcu_ofx import DocfcuOFXExtractor
 from .etrade_ofx import EtradeOFXExtractor
 from .lfcu_ofx import LfcuOFXExtractor
 from .mercury import MercuryExtractor
@@ -34,6 +35,7 @@ ALL_EXTRACTORS: dict[str, typing.Type[ExtractorBase]] = {
     CreditHumanExtractor.EXTRACTOR_NAME: CreditHumanExtractor,
     CreditHumanOFXExtractor.EXTRACTOR_NAME: CreditHumanOFXExtractor,
     DocfcuExtractor.EXTRACTOR_NAME: DocfcuExtractor,
+    DocfcuOFXExtractor.EXTRACTOR_NAME: DocfcuOFXExtractor,
     EtradeOFXExtractor.EXTRACTOR_NAME: EtradeOFXExtractor,
     LfcuOFXExtractor.EXTRACTOR_NAME: LfcuOFXExtractor,
     PlaidExtractor.EXTRACTOR_NAME: PlaidExtractor,
