@@ -1,0 +1,76 @@
+OFXHEADER:100
+DATA:OFXSGML
+VERSION:102
+SECURITY:NONE
+ENCODING:USASCII
+CHARSET:1252
+COMPRESSION:NONE
+OLDFILEUID:NONE
+NEWFILEUID:NONE
+
+<OFX>
+  <SIGNONMSGSRSV1>
+    <SONRS>
+      <STATUS>
+        <CODE>0
+        <SEVERITY>INFO
+      </STATUS>
+      <DTSERVER>20251102001433.237
+      <LANGUAGE>ENG
+      <FI>
+        <ORG>Credit Human
+        <FID>13216
+      </FI>
+    </SONRS>
+  </SIGNONMSGSRSV1>
+  <BANKMSGSRSV1>
+    <STMTTRNRS>
+      <TRNUID>0
+      <STATUS>
+        <CODE>0
+        <SEVERITY>INFO
+      </STATUS>
+      <STMTRS>
+        <CURDEF>USD
+        <BANKACCTFROM>
+          <BANKID>000000000
+          <ACCTID>TEST123456-S0001
+          <ACCTTYPE>SAVINGS
+        </BANKACCTFROM>
+        <BANKTRANLIST>
+          <DTSTART>20250803
+          <DTEND>20251101
+          <STMTTRN>
+            <TRNTYPE>CREDIT
+            <DTPOSTED>20251011
+            <TRNAMT>100.00
+            <FITID>TEST20251011:001
+            <NAME>2.500% Annual Percentage Yield Earned
+            <MEMO>Deposit Dividend 2.500% Annual Percentage Yield Earned 2.55% from 09/11/25 through 10/10/25
+          </STMTTRN>
+          <STMTTRN>
+            <TRNTYPE>CREDIT
+            <DTPOSTED>20250911
+            <TRNAMT>150.00
+            <FITID>TEST20250911:002
+            <NAME>2.500% Annual Percentage Yield Earned
+            <MEMO>Deposit Dividend 2.500% Annual Percentage Yield Earned 2.55% from 08/11/25 through 09/10/25
+          </STMTTRN>
+          <STMTTRN>
+            <TRNTYPE>CREDIT
+            <DTPOSTED>20250811
+            <TRNAMT>200.00
+            <FITID>TEST20250811:003
+            <NAME>2.500% Annual Percentage Yield Earned
+            <MEMO>Deposit Dividend 2.500% Annual Percentage Yield Earned 2.55% from 07/11/25 through 08/10/25
+          </STMTTRN>
+        </BANKTRANLIST>
+        <LEDGERBAL>
+          <BALAMT>10000.00
+          <DTASOF>20251102001433.239
+        </LEDGERBAL>
+      </STMTRS>
+    </STMTTRNRS>
+  </BANKMSGSRSV1>
+</OFX>
+
