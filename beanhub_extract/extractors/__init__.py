@@ -22,6 +22,7 @@ from .synchrony_pdf import SynchronyPdfExtractor
 from .ussfcu_ofx import UssfcuOFXExtractor
 from .wealthsimple import WealthsimpleExtractor
 from .wsecu import WSECUExtractor
+from .wsecu_ofx import WsecuOFXExtractor
 
 ALL_EXTRACTORS: dict[str, typing.Type[ExtractorBase]] = {
     AllyBankOFXExtractor.EXTRACTOR_NAME: AllyBankOFXExtractor,
@@ -43,6 +44,7 @@ ALL_EXTRACTORS: dict[str, typing.Type[ExtractorBase]] = {
     UssfcuOFXExtractor.EXTRACTOR_NAME: UssfcuOFXExtractor,
     WealthsimpleExtractor.EXTRACTOR_NAME: WealthsimpleExtractor,
     WSECUExtractor.EXTRACTOR_NAME: WSECUExtractor,
+    WsecuOFXExtractor.EXTRACTOR_NAME: WsecuOFXExtractor,
     CSVExtractor.EXTRACTOR_NAME: CSVExtractor,
 }
 
